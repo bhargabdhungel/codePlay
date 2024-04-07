@@ -43,20 +43,8 @@ function login(req, res) {
                 id: true,
             }
         });
-        if (!user) {
+        if (!user)
             return res.status(401).send({ message: "user not found", path: "signup" });
-        }
-        else {
-            if (!user.verified) {
-                const otpResponse = yield (0, sendEmail_1.default)(user.email, "email");
-                if (otpResponse.error) {
-                    return res.status(500).send({ message: "Error sending OTP" });
-                }
-                return res.status(401).send({ message: "User not verified", path: "verify", data: {
-                        email: user.email
-                    } });
-            }
-        }
         // Check if the password is correct
         const passwordMatch = yield bcrypt_1.default.compare(inputUser.password, user.password);
         if (!passwordMatch) {
@@ -68,7 +56,7 @@ function login(req, res) {
             if (otpResponse.error) {
                 return res.status(500).send({ message: "Error sending OTP" });
             }
-            return res.status(401).send({ message: "OTP sent for verification", path: "verify", data: {
+            return res.status(401).send({ message: "OTP sent for verification", path: "verifyEmail", data: {
                     email: user.email
                 } });
         }

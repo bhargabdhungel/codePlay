@@ -30,25 +30,27 @@ function signup(req, res) {
             else
                 return res.status(400).send({ message: "Invalid input" });
         }
-        // Check if the user already exists
-        const user = yield prisma.user.findUnique({
+        // Check if the user already exists with the same email or username
+        const user = yield prisma.user.findFirst({
             where: {
-                email: inputUser.email,
+                OR: [
+                    { email: inputUser.email },
+                    { name: inputUser.username }
+                ]
             },
             select: {
-                id: true,
                 verified: true,
-            },
+                email: true,
+                name: true,
+            }
         });
         if (user) {
-            if (user.verified)
-                return res.status(409).send({ message: "User already exists", path: "login" });
-            const otpResponse = yield (0, sendEmail_1.default)(inputUser.email, "email");
-            if (otpResponse.error)
-                return res.status(500).send({ message: "Error sending OTP" });
-            return res.status(409).send({ message: "OTP sent for verification", path: "verify", data: {
-                    email: inputUser.email
-                } });
+            if (user.email == inputUser.email) {
+                return res.status(409).send({ message: "Email already registered", path: "login" });
+            }
+            else if (user.name == inputUser.username) {
+                return res.status(409).send({ message: "username already taken" });
+            }
         }
         // Create the user and send the OTP
         const hashedPassword = yield bcrypt_1.default.hash(inputUser.password, 10);
@@ -56,13 +58,14 @@ function signup(req, res) {
             data: {
                 email: inputUser.email,
                 password: hashedPassword,
+                name: inputUser.username,
             },
         });
         const otpResponse = yield (0, sendEmail_1.default)(newUser.email, "email");
         if (otpResponse.error) {
             return res.status(500).send({ message: "Error sending OTP" });
         }
-        return res.status(201).send({ message: "User created", path: "verify", data: {
+        return res.status(201).send({ message: "OTP sent for verification", path: "verifyEmail", data: {
                 email: newUser.email
             } });
     });
