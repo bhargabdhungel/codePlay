@@ -71,5 +71,5 @@ export default async function verifyEmail(req: Request, res: Response) {
       otpAttempt: 0,
     },
   });
-  return res.status(200).send({ message: "User verified", path: "home" });
+  return res.status(200).send({ message: "User verified", path: "" });
 }

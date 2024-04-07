@@ -41,7 +41,7 @@ function login(req, res) {
                 password: true,
                 email: true,
                 id: true,
-            }
+            },
         });
         if (!user)
             return res.status(401).send({ message: "user not found", path: "signup" });
@@ -56,9 +56,13 @@ function login(req, res) {
             if (otpResponse.error) {
                 return res.status(500).send({ message: "Error sending OTP" });
             }
-            return res.status(401).send({ message: "OTP sent for verification", path: "verifyEmail", data: {
-                    email: user.email
-                } });
+            return res.status(401).send({
+                message: "OTP sent for verification",
+                path: "verifyEmail",
+                data: {
+                    email: user.email,
+                },
+            });
         }
         // Generate JWT token and send it in a cookie
         const token = jsonwebtoken_1.default.sign({ userId: user.id }, process.env.JWT_SECRET, {
@@ -69,7 +73,7 @@ function login(req, res) {
             secure: process.env.NODE_ENV === "production",
             maxAge: 1000 * 60 * 60 * 24 * 15,
         });
-        return res.status(200).send({ path: "home" });
+        return res.status(200).send({ path: "" });
     });
 }
 exports.default = login;

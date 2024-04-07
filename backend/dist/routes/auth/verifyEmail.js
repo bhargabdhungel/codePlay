@@ -77,7 +77,7 @@ function verifyEmail(req, res) {
                 otpAttempt: 0,
             },
         });
-        return res.status(200).send({ message: "User verified", path: "home" });
+        return res.status(200).send({ message: "User verified", path: "" });
     });
 }
 exports.default = verifyEmail;
