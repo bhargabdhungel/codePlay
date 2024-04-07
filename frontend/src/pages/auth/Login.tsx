@@ -13,7 +13,7 @@ import { defaultTheme } from "../../assets/theme";
 import Copyright from "../../components/Copyright";
 import fetchData, { Method } from "../../helpers/fetchData";
 import { useState } from "react";
-import CustomBackDrop from  "../../components/BackDrop";
+import CustomBackDrop from "../../components/BackDrop";
 import { useNavigate } from "react-router-dom";
 
 export interface fetchResponse {
@@ -42,8 +42,12 @@ export default function SignInSide() {
           password,
         },
       });
-      if(response.message) alert(response.message);
-      if(response.path) navigate('/'+response.path);
+      if (response.message) alert(response.message);
+      if (response.path) navigate("/" + response.path);
+      if (response.data) {
+        for (const key in response.data)
+          localStorage.setItem(key, response.data[key]);
+      }
       // alert(response.path);
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -133,9 +137,7 @@ export default function SignInSide() {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  {
-                    loading ? `Signing In` : `Sign In`
-                  }
+                  {loading ? `Signing In` : `Sign In`}
                 </Button>
                 <Grid container>
                   <Grid item xs>

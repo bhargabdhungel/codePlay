@@ -2,7 +2,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -17,30 +16,32 @@ import { fetchResponse } from "./Login";
 import { useNavigate } from "react-router-dom";
 import SimpleBackdrop from "../../components/BackDrop";
 
-export default function SignUp() {
+export default function ForgotPassword() {
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
-  
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     setLoading(true);
-    try{
-      // Send the data to the server
-      const resp : fetchResponse  = await fetchData({
-        method : Method.POST,
-        url : import.meta.env.VITE_API + "/auth/signup",
-        body : {
-          email : data.get("email"),
-          username : data.get("username"),
-          password : data.get("password"),
-        }
-      })
+    try {
+      const resp: fetchResponse = await fetchData({
+        method: Method.POST,
+        url: import.meta.env.VITE_API + "/auth/forgotPassword",
+        body: {
+          email: data.get("email"),
+          newPassword: data.get("password"),
+        },
+      });
 
-      if(resp.message) alert(resp.message);
-      if(resp.path) navigate('/'+resp.path);
-    }
-    catch(err: unknown){
+      if (resp.message) alert(resp.message);
+      if (resp.path) navigate("/" + resp.path);
+      if (resp.data) {
+        for (const key in resp.data) {
+          localStorage.setItem(key, resp.data[key]);
+        }
+      }
+    } catch (err: unknown) {
       if (err instanceof Error) {
         alert("Check your internet connection");
         return;
@@ -67,7 +68,7 @@ export default function SignUp() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign up
+              Reset Password
             </Typography>
             <Box
               component="form"
@@ -76,17 +77,6 @@ export default function SignUp() {
               sx={{ mt: 3 }}
             >
               <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    autoComplete="given-name"
-                    name="username"
-                    required
-                    fullWidth
-                    id="username"
-                    label="username"
-                    autoFocus
-                  />
-                </Grid>
                 <Grid item xs={12}>
                   <TextField
                     required
@@ -102,7 +92,7 @@ export default function SignUp() {
                     required
                     fullWidth
                     name="password"
-                    label="Password"
+                    label="New Password"
                     type="password"
                     id="password"
                     autoComplete="new-password"
@@ -115,15 +105,8 @@ export default function SignUp() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign Up
+                Reset Password
               </Button>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    Already have an account? Sign in
-                  </Link>
-                </Grid>
-              </Grid>
             </Box>
           </Box>
           <Copyright

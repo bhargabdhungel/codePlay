@@ -1,19 +1,21 @@
 import { Request, Response } from "express";
-import { ForgotPassword, ForgotPasswordSchema } from "../../validations/forgotPassword";
+import {
+  ForgotPassword,
+  ForgotPasswordSchema,
+} from "../../validations/forgotPassword";
 import { PrismaClient } from "@prisma/client";
 import sendOTP from "../../utils/sendEmail";
 import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
-export default async function forgotPassword(req : Request, res : Response) {
+export default async function forgotPassword(req: Request, res: Response) {
   // validate the request body
-  let input : ForgotPassword;
+  let input: ForgotPassword;
   try {
     input = ForgotPasswordSchema.parse(req.body);
-  }
-  catch (e : any) {
-    if(e.errors) return res.status(400).send({ message: e.errors[0].message });
+  } catch (e: any) {
+    if (e.errors) return res.status(400).send({ message: e.errors[0].message });
     else return res.status(400).send({ message: "Invalid input" });
   }
 
@@ -27,7 +29,7 @@ export default async function forgotPassword(req : Request, res : Response) {
     },
   });
   if (!user) {
-    return res.status(404).send({ message: "User not found" , path : "signup" });
+    return res.status(404).send({ message: "User not found", path: "signup" });
   }
 
   // update the user and send the OTP
@@ -43,5 +45,11 @@ export default async function forgotPassword(req : Request, res : Response) {
   const otpResponse = await sendOTP(input.email, "reset");
   if (otpResponse.error)
     return res.status(500).send({ message: "Error sending OTP" });
-  return res.status(200).send({ message: "OTP sent for password reset", path : "resetPassword"  });
+  return res
+    .status(200)
+    .send({
+      message: "OTP sent for password reset",
+      path: "resetPassword",
+      data: { email: input.email },
+    });
 }

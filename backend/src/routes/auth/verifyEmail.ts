@@ -1,20 +1,20 @@
 import { Request, Response } from "express";
-import { VerifyEmailBody, VerifyEmailBodySchema } from "../../validations/verifyEmailBody";
+import {
+  VerifyEmailBody,
+  VerifyEmailBodySchema,
+} from "../../validations/verifyEmailBody";
 import { PrismaClient } from "@prisma/client";
-
 
 const prisma = new PrismaClient();
 
-
-export default async function verifyEmail(req : Request, res : Response) {
+export default async function verifyEmail(req: Request, res: Response) {
   // Validate the input
-  let inputUser : VerifyEmailBody;
+  let inputUser: VerifyEmailBody;
   try {
     inputUser = VerifyEmailBodySchema.parse(req.body);
-  }
-  catch (e : any) {
-    if(e.errors) return res.status(400).send({ message : e.errors[0].message });
-    else return res.status(400).send({ message : "Invalid input" });
+  } catch (e: any) {
+    if (e.errors) return res.status(400).send({ message: e.errors[0].message });
+    else return res.status(400).send({ message: "Invalid input" });
   }
 
   // Check if the user exists and has not attempted OTP verification more than 10 times
@@ -27,14 +27,13 @@ export default async function verifyEmail(req : Request, res : Response) {
       otpAttempt: true,
     },
   });
-  if(!user)
-    return res.status(404).send({ message: "User not found", path : "signup" });
-  if(user.otpAttempt >= 10)
-    return res.status(401).send({ message: "Too many attempts"});
+  if (!user)
+    return res.status(404).send({ message: "User not found", path: "signup" });
+  if (user.otpAttempt >= 10)
+    return res.status(401).send({ message: "Too many attempts" });
 
-  
   // Check if the OTP is correct and has not expired
-   const userWithOtp = await prisma.user.findFirst({
+  const userWithOtp = await prisma.user.findFirst({
     where: {
       email: inputUser.email,
       otp: inputUser.otp,
@@ -72,5 +71,5 @@ export default async function verifyEmail(req : Request, res : Response) {
       otpAttempt: 0,
     },
   });
-  return res.status(200).send({ message: "User verified", path : "login" });
+  return res.status(200).send({ message: "User verified", path: "home" });
 }
