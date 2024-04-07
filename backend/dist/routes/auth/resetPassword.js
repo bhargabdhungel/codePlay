@@ -82,7 +82,7 @@ function resetPassword(req, res) {
         });
         return res
             .status(200)
-            .send({ message: "Password reset successfully", path: "" });
+            .send({ message: "Password reset successfully", path: "home" });
     });
 }
 exports.default = resetPassword;

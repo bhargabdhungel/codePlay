@@ -67,5 +67,5 @@ export default async function login(req: Request, res: Response) {
     secure: process.env.NODE_ENV === "production",
     maxAge: 1000 * 60 * 60 * 24 * 15,
   });
-  return res.status(200).send({ path: "" });
+  return res.status(200).send({ path: "home" });
 }
