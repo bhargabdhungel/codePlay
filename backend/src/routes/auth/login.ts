@@ -32,18 +32,8 @@ export default async function login(req : Request, res : Response) {
       id: true,
     }
   });
-  if (!user) {
+  if (!user)
     return res.status(401).send({ message: "user not found" , path : "signup" });
-  }
-  else{
-    if(!user.verified){
-      const otpResponse = await sendOTP(user.email, "email");
-      if(otpResponse.error){
-        return res.status(500).send({ message: "Error sending OTP" });
-      }
-      return res.status(401).send({ message: "User not verified", path : "verify" });
-    }
-  }
 
   // Check if the password is correct
   const passwordMatch = await bcrypt.compare(inputUser.password, user.password);
@@ -57,7 +47,9 @@ export default async function login(req : Request, res : Response) {
     if(otpResponse.error){
       return res.status(500).send({ message: "Error sending OTP" });
     }
-    return res.status(401).send({ message: "OTP sent for verification", path : "verify" });
+    return res.status(401).send({ message: "OTP sent for verification", path : "verifyEmail" , data : {
+      email : user.email
+    }});
   }
 
   // Generate JWT token and send it in a cookie

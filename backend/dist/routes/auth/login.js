@@ -52,7 +52,9 @@ function login(req, res) {
                 if (otpResponse.error) {
                     return res.status(500).send({ message: "Error sending OTP" });
                 }
-                return res.status(401).send({ message: "User not verified", path: "verify" });
+                return res.status(401).send({ message: "User not verified", path: "verify", data: {
+                        email: user.email
+                    } });
             }
         }
         // Check if the password is correct
@@ -66,7 +68,9 @@ function login(req, res) {
             if (otpResponse.error) {
                 return res.status(500).send({ message: "Error sending OTP" });
             }
-            return res.status(401).send({ message: "OTP sent for verification", path: "verify" });
+            return res.status(401).send({ message: "OTP sent for verification", path: "verify", data: {
+                    email: user.email
+                } });
         }
         // Generate JWT token and send it in a cookie
         const token = jsonwebtoken_1.default.sign({ userId: user.id }, process.env.JWT_SECRET, {

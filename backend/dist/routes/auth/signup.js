@@ -46,7 +46,9 @@ function signup(req, res) {
             const otpResponse = yield (0, sendEmail_1.default)(inputUser.email, "email");
             if (otpResponse.error)
                 return res.status(500).send({ message: "Error sending OTP" });
-            return res.status(409).send({ message: "OTP sent for verification", path: "verify" });
+            return res.status(409).send({ message: "OTP sent for verification", path: "verify", data: {
+                    email: inputUser.email
+                } });
         }
         // Create the user and send the OTP
         const hashedPassword = yield bcrypt_1.default.hash(inputUser.password, 10);
@@ -60,7 +62,9 @@ function signup(req, res) {
         if (otpResponse.error) {
             return res.status(500).send({ message: "Error sending OTP" });
         }
-        return res.status(201).send({ message: "User created", path: "verify" });
+        return res.status(201).send({ message: "User created", path: "verify", data: {
+                email: newUser.email
+            } });
     });
 }
 exports.default = signup;
