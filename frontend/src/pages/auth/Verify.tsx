@@ -60,7 +60,7 @@ export default function Verify({ path }: { path: string }) {
     };
     const otpString = otp.join("");
     if (otpString.length === 6) verifyOTP(otpString);
-  }, [otp, navigate]);
+  }, [otp, navigate, path]);
 
   return (
     <>

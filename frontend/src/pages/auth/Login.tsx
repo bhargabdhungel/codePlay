@@ -152,14 +152,18 @@ export default function SignInSide() {
                     </Link>
                   </Grid>
                   <Grid item>
+                    Don't have an account?{" "}
                     <Link
-                      sx={{ cursor: "pointer" }}
+                      sx={{
+                        cursor: "pointer",
+                        textDecoration: { xs: "none", sm: "underline" },
+                      }}
                       variant="body2"
                       onClick={() => {
                         navigate("/signup");
                       }}
                     >
-                      {"Don't have an account? Sign Up"}
+                      Get started
                     </Link>
                   </Grid>
                 </Grid>

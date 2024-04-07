@@ -1,19 +1,15 @@
-// import Button from '@mui/material/Button';
-import Snackbar from '@mui/material/Snackbar';
-
+import Snackbar from "@mui/material/Snackbar";
 interface AutohideSnackbarProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function AutohideSnackbar({ open, setOpen}: AutohideSnackbarProps) {
-
-  // const handleClick = () => {
-  //   setOpen(true);
-  // };
-
-  const handleClose = (_: unknown, reason : string) => {
-    if (reason === 'clickaway') {
+export default function AutohideSnackbar({
+  open,
+  setOpen,
+}: AutohideSnackbarProps) {
+  const handleClose = (_: unknown, reason: string) => {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -22,7 +18,6 @@ export default function AutohideSnackbar({ open, setOpen}: AutohideSnackbarProps
 
   return (
     <div>
-      {/* <Button onClick={handleClick}>Open Snackbar</Button> */}
       <Snackbar
         open={open}
         autoHideDuration={5000}
