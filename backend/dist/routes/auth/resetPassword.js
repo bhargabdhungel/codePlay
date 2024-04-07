@@ -67,9 +67,7 @@ function resetPassword(req, res) {
             return res.status(401).send({ message: "Invalid OTP" });
         }
         if (!userWithOtp.newPassword)
-            return res
-                .status(400)
-                .send({
+            return res.status(400).send({
                 message: "Please provide a new password",
                 path: "forgotPassword",
             });
@@ -84,7 +82,7 @@ function resetPassword(req, res) {
         });
         return res
             .status(200)
-            .send({ message: "Password reset successfully", path: "home" });
+            .send({ message: "Password reset successfully", path: "" });
     });
 }
 exports.default = resetPassword;

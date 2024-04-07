@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 function logout(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         res.clearCookie("token");
-        return res.status(200).send({ message: "Logged out" });
+        return res.status(200).send({ message: "Logged out", path: "login" });
     });
 }
 exports.default = logout;
