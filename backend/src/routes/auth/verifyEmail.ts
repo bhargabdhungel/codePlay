@@ -67,6 +67,9 @@ export default async function verifyEmail(req : Request, res : Response) {
     },
     data: {
       verified: true,
+      otp: null,
+      otpExpire: null,
+      otpAttempt: 0,
     },
   });
   return res.status(200).send({ message: "User verified", path : "login" });

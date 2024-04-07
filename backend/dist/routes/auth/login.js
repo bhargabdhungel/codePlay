@@ -77,7 +77,7 @@ function login(req, res) {
             secure: process.env.NODE_ENV === "production",
             maxAge: 1000 * 60 * 60 * 24 * 15,
         });
-        return res.status(200).send({ message: "Login successful" });
+        return res.status(200).send({ path: "home" });
     });
 }
 exports.default = login;

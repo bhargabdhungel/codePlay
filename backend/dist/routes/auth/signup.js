@@ -37,10 +37,16 @@ function signup(req, res) {
             },
             select: {
                 id: true,
+                verified: true,
             },
         });
         if (user) {
-            return res.status(409).send({ message: "User already exists", path: "login" });
+            if (user.verified)
+                return res.status(409).send({ message: "User already exists", path: "login" });
+            const otpResponse = yield (0, sendEmail_1.default)(inputUser.email, "email");
+            if (otpResponse.error)
+                return res.status(500).send({ message: "Error sending OTP" });
+            return res.status(409).send({ message: "OTP sent for verification", path: "verify" });
         }
         // Create the user and send the OTP
         const hashedPassword = yield bcrypt_1.default.hash(inputUser.password, 10);

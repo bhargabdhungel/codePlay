@@ -27,7 +27,6 @@ interface FetchDataProps {
 
 
 export default async function fetchData( data : FetchDataProps ) {
-
   try{
     const response: AxiosResponse = await axios({
       method :  data.method,
