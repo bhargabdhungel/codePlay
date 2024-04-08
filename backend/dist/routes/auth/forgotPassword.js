@@ -55,12 +55,10 @@ function forgotPassword(req, res) {
         const otpResponse = yield (0, sendEmail_1.default)(input.email, "reset");
         if (otpResponse.error)
             return res.status(500).send({ message: "Error sending OTP" });
-        return res
-            .status(200)
-            .send({
+        return res.status(200).send({
             message: "OTP sent for password reset",
             path: "resetPassword",
-            data: { email: input.email },
+            save: { email: input.email },
         });
     });
 }

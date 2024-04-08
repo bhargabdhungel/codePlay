@@ -8,9 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const verifyEmailBody_1 = require("../../validations/verifyEmailBody");
 const client_1 = require("@prisma/client");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const prisma = new client_1.PrismaClient();
 function verifyEmail(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -77,7 +81,10 @@ function verifyEmail(req, res) {
                 otpAttempt: 0,
             },
         });
-        return res.status(200).send({ message: "User verified", path: "home" });
+        const token = jsonwebtoken_1.default.sign({ userId: user.id }, process.env.JWT_SECRET, {
+            expiresIn: "15d",
+        });
+        return res.status(200).send({ message: "User verified", save: { token } });
     });
 }
 exports.default = verifyEmail;

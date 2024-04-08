@@ -68,12 +68,7 @@ function login(req, res) {
         const token = jsonwebtoken_1.default.sign({ userId: user.id }, process.env.JWT_SECRET, {
             expiresIn: "15d",
         });
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            maxAge: 1000 * 60 * 60 * 24 * 15,
-        });
-        return res.status(200).send({ path: "home" });
+        return res.status(200).send({ path: "home", save: { token } });
     });
 }
 exports.default = login;

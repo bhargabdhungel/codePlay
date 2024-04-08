@@ -4,6 +4,7 @@ import {
   VerifyEmailBodySchema,
 } from "../../validations/verifyEmailBody";
 import { PrismaClient } from "@prisma/client";
+import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
@@ -71,5 +72,13 @@ export default async function verifyEmail(req: Request, res: Response) {
       otpAttempt: 0,
     },
   });
-  return res.status(200).send({ message: "User verified", path: "home" });
+
+  const token = jwt.sign(
+    { userId: user.id },
+    process.env.JWT_SECRET as string,
+    {
+      expiresIn: "15d",
+    }
+  );
+  return res.status(200).send({ message: "User verified", save: { token } });
 }

@@ -20,27 +20,24 @@ import SimpleBackdrop from "../../components/BackDrop";
 export default function SignUp() {
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
-  
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     setLoading(true);
-    try{
+    try {
       // Send the data to the server
-      const resp : fetchResponse  = await fetchData({
-        method : Method.POST,
-        url : import.meta.env.VITE_API + "/auth/signup",
-        body : {
-          email : data.get("email"),
-          username : data.get("username"),
-          password : data.get("password"),
-        }
-      })
-
-      if(resp.message) alert(resp.message);
-      if(resp.path) navigate('/'+resp.path);
-    }
-    catch(err: unknown){
+      const resp: fetchResponse = await fetchData({
+        method: Method.POST,
+        url: import.meta.env.VITE_API + "/auth/signup",
+        body: {
+          email: data.get("email"),
+          username: data.get("username"),
+          password: data.get("password"),
+        },
+      });
+      if (resp.path) navigate("/" + resp.path);
+    } catch (err: unknown) {
       if (err instanceof Error) {
         alert("Check your internet connection");
         return;

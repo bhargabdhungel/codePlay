@@ -18,10 +18,10 @@ const prisma = new client_1.PrismaClient();
 function me(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const token = req.cookies.token;
+            const token = req.headers.authorization;
             if (!token)
                 return res.status(401).send({ message: "Not logged in" });
-            // Verify the token 
+            // Verify the token
             let decoded;
             try {
                 decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
@@ -41,11 +41,13 @@ function me(req, res) {
                     name: true,
                     verified: true,
                     role: true,
-                }
+                },
             });
             if (!user)
                 return res.status(401).send({ message: "User not found", path: "login" });
-            return res.status(200).send(user);
+            return res.status(200).send({
+                data: user,
+            });
         }
         catch (e) {
             return res.status(500).send({ message: "Internal server error" });

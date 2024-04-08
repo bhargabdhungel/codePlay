@@ -42,13 +42,7 @@ export default function SignInSide() {
           password,
         },
       });
-      if (response.message) alert(response.message);
       if (response.path) navigate("/" + response.path);
-      if (response.data) {
-        for (const key in response.data)
-          localStorage.setItem(key, response.data[key]);
-      }
-      // alert(response.path);
     } catch (err: unknown) {
       if (err instanceof Error) {
         alert("Check your internet connection");

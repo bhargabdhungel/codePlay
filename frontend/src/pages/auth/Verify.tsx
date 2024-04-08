@@ -38,16 +38,10 @@ export default function Verify({ path }: { path: string }) {
           method: Method.POST,
           body: {
             otp: otpString,
-            email: localStorage.getItem("email") || "",
+            email: localStorage.getItem("email") || null,
           },
         });
-        if (resp.message) alert(resp.message);
         if (resp.path) navigate("/" + resp.path);
-        if (resp.data) {
-          for (const key in resp.data) {
-            localStorage.setItem(key, resp.data[key]);
-          }
-        }
       } catch (err: unknown) {
         if (err instanceof Error) {
           alert("Check your internet connection");

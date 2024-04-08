@@ -33,20 +33,19 @@ function signup(req, res) {
         // Check if the user already exists with the same email or username
         const user = yield prisma.user.findFirst({
             where: {
-                OR: [
-                    { email: inputUser.email },
-                    { name: inputUser.username }
-                ]
+                OR: [{ email: inputUser.email }, { name: inputUser.username }],
             },
             select: {
                 verified: true,
                 email: true,
                 name: true,
-            }
+            },
         });
         if (user) {
             if (user.email == inputUser.email) {
-                return res.status(409).send({ message: "Email already registered", path: "login" });
+                return res
+                    .status(409)
+                    .send({ message: "Email already registered", path: "login" });
             }
             else if (user.name == inputUser.username) {
                 return res.status(409).send({ message: "username already taken" });
@@ -65,9 +64,13 @@ function signup(req, res) {
         if (otpResponse.error) {
             return res.status(500).send({ message: "Error sending OTP" });
         }
-        return res.status(201).send({ message: "OTP sent for verification", path: "verifyEmail", data: {
-                email: newUser.email
-            } });
+        return res.status(201).send({
+            message: "OTP sent for verification",
+            path: "verifyEmail",
+            save: {
+                email: newUser.email,
+            },
+        });
     });
 }
 exports.default = signup;

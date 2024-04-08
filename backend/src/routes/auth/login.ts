@@ -62,10 +62,5 @@ export default async function login(req: Request, res: Response) {
       expiresIn: "15d",
     }
   );
-  res.cookie("token", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 1000 * 60 * 60 * 24 * 15,
-  });
-  return res.status(200).send({ path: "home" });
+  return res.status(200).send({ path: "home", save: { token } });
 }

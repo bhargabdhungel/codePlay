@@ -45,11 +45,9 @@ export default async function forgotPassword(req: Request, res: Response) {
   const otpResponse = await sendOTP(input.email, "reset");
   if (otpResponse.error)
     return res.status(500).send({ message: "Error sending OTP" });
-  return res
-    .status(200)
-    .send({
-      message: "OTP sent for password reset",
-      path: "resetPassword",
-      data: { email: input.email },
-    });
+  return res.status(200).send({
+    message: "OTP sent for password reset",
+    path: "resetPassword",
+    save: { email: input.email },
+  });
 }
