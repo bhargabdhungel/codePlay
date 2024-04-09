@@ -73,11 +73,15 @@ export default function Verify({ path }: { path: string }) {
               {otp.map((digit, index) => (
                 <input
                   key={index}
-                  className="w-16 h-16 rounded-md text-4xl text-center border"
+                  className="w-16 h-16 rounded-md text-4xl text-center border bg-inherit text-white"
                   type="text"
                   ref={inputRefs.current[index]}
                   value={digit}
                   onChange={(e) => {
+                    if (e.target.value === "") {
+                      if (index === 0) return;
+                      setFocusedIndex(index - 1);
+                    }
                     let value = parseInt(e.target.value);
                     if (isNaN(value)) {
                       setOTP((prev) => {
