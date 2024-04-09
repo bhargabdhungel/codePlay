@@ -20,17 +20,17 @@ function me(req, res) {
         try {
             const token = req.headers.authorization;
             if (!token)
-                return res.status(401).send({ message: "Not logged in", path: "login" });
+                return res.status(401).send({ message: "Not logged in" });
             // Verify the token
             let decoded;
             try {
                 decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
             }
             catch (e) {
-                return res.status(401).send({ message: "Invalid token", path: "login" });
+                return res.status(401).send({ message: "Not logged in" });
             }
             if (!decoded || !decoded.userId)
-                return res.status(401).send({ message: "Invalid token", path: "login" });
+                return res.status(401).send({ message: "Not logged in" });
             // Send the user data
             const user = yield prisma.user.findUnique({
                 where: {
@@ -44,7 +44,7 @@ function me(req, res) {
                 },
             });
             if (!user)
-                return res.status(401).send({ message: "User not found", path: "login" });
+                return res.status(401).send({ message: "User not found" });
             return res.status(200).send({
                 data: user,
             });

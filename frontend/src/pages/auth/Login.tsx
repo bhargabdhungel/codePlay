@@ -20,6 +20,7 @@ export interface fetchResponse {
   data?: unknown;
   message?: string;
   path?: string;
+  status: number;
 }
 
 export default function SignInSide() {
@@ -43,6 +44,7 @@ export default function SignInSide() {
         },
       });
       if (response.path) navigate("/" + response.path);
+      if (response.message) alert(response.message);
     } catch (err: unknown) {
       if (err instanceof Error) {
         alert("Check your internet connection");

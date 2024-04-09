@@ -36,6 +36,7 @@ export default function SignUp() {
           password: data.get("password"),
         },
       });
+      if (resp.message) alert(resp.message);
       if (resp.path) navigate("/" + resp.path);
     } catch (err: unknown) {
       if (err instanceof Error) {

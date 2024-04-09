@@ -1,9 +1,10 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import useSearchFeature from "../../hooks/useSearchFeature";
 import {
   searchValueAtom,
   showUserAtom,
   showSearchBarAtom,
+  loggedInAtom,
 } from "../../store/search";
 import Search from "../../components/Search";
 import { SearchOptions } from "../../assets/searchData";
@@ -35,6 +36,7 @@ export default function Home() {
   const showSearchBar = useRecoilValue(showSearchBarAtom);
   const [searchValue, setSearchValue] = useRecoilState(searchValueAtom);
   const navigate = useNavigate();
+  const setLoggedIn = useSetRecoilState(loggedInAtom);
 
   const [showUser, setShowUser] = useRecoilState(showUserAtom);
 
@@ -44,83 +46,90 @@ export default function Home() {
 
     if (searchValue == SearchOptions.Logout) {
       localStorage.removeItem("token");
-      navigate("/login");
+      setLoggedIn(false);
+      navigate("/");
     }
     if (searchValue == SearchOptions.Home) navigate("/home");
 
     if (searchValue == SearchOptions.User) setShowUser(true);
-  }, [searchValue, navigate, setSearchValue, setShowUser]);
+  }, [searchValue, navigate, setSearchValue, setShowUser, setLoggedIn]);
 
   return (
     <>
-      <ThemeProvider theme={darkTheme}>
-        <Grid container component="main" sx={{ height: "100vh" }}>
-          <CssBaseline />
-          {showSearchBar ? (
-            <Search />
-          ) : (
-            <div className="flex justify-center items-center w-full">
-              <div>
-                <h1>Welcome to codeplay</h1>
+      {!loading && (
+        <ThemeProvider theme={darkTheme}>
+          <Grid container component="main" sx={{ height: "100vh" }}>
+            <CssBaseline />
+            {showSearchBar ? (
+              <Search />
+            ) : (
+              <div className="flex justify-center items-center w-full">
+                <div>
+                  <h1 className="text-3xl text-pretty select-none">
+                    Its good Trust me
+                  </h1>
+                </div>
               </div>
-            </div>
-          )}
-        </Grid>
-        <Drawer
-          anchor="right"
-          open={showUser}
-          onClose={() => {
-            setShowUser(false);
-          }}
-        >
-          <Box
-            sx={{
-              width: 250,
-            }}
-            role="presentation"
-            onClick={() => {
-              // setShowProfile(false);
-            }}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") setShowUser(false);
+            )}
+          </Grid>
+          <Drawer
+            anchor="right"
+            open={showUser}
+            onClose={() => {
+              setShowUser(false);
             }}
           >
-            <List>
-              <ListItem key={"JavaScript"} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <JavascriptIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={"JavaScript"} />
-                </ListItemButton>
-              </ListItem>
-              {["Profile", "JavaScript", "AI ML", "Web3"].map((text, index) => (
-                <ListItem key={text} disablePadding>
+            <Box
+              sx={{
+                width: 250,
+              }}
+              role="presentation"
+              onClick={() => {
+                // setShowProfile(false);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") setShowUser(false);
+              }}
+            >
+              <List>
+                <ListItem key={"JavaScript"} disablePadding>
                   <ListItemButton>
                     <ListItemIcon>
-                      {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                      <JavascriptIcon />
                     </ListItemIcon>
-                    <ListItemText primary={text} />
+                    <ListItemText primary={"JavaScript"} />
                   </ListItemButton>
                 </ListItem>
-              ))}
-            </List>
-            <Divider />
-            <List>
-              {["Profile", "Trash", "Spam"].map((text, index) => (
-                <ListItem key={text} disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
-          </Box>
-        </Drawer>
-      </ThemeProvider>
+                {["Profile", "JavaScript", "AI ML", "Web3"].map(
+                  (text, index) => (
+                    <ListItem key={text} disablePadding>
+                      <ListItemButton>
+                        <ListItemIcon>
+                          {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                        </ListItemIcon>
+                        <ListItemText primary={text} />
+                      </ListItemButton>
+                    </ListItem>
+                  )
+                )}
+              </List>
+              <Divider />
+              <List>
+                {["Profile", "Trash", "Spam"].map((text, index) => (
+                  <ListItem key={text} disablePadding>
+                    <ListItemButton>
+                      <ListItemIcon>
+                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+          </Drawer>
+        </ThemeProvider>
+      )}
       <CustomBackDrop open={loading} />
     </>
   );

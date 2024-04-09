@@ -41,6 +41,7 @@ export default function Verify({ path }: { path: string }) {
             email: localStorage.getItem("email") || null,
           },
         });
+        if (resp.message) alert(resp.message);
         if (resp.path) navigate("/" + resp.path);
       } catch (err: unknown) {
         if (err instanceof Error) {

@@ -5,6 +5,7 @@ import Verify from "./pages/auth/Verify";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Home from "./pages/user/Home";
 import Navbar from "./components/Navbar";
+import Landing from "./pages/user/Landing";
 
 // function Home() {
 //   return (
@@ -33,7 +34,7 @@ function HomeRoutes() {
 export default function App(): JSX.Element {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Landing />} />
       <Route path="/home" element={<HomeRoutes />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />

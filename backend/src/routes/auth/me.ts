@@ -7,18 +7,17 @@ const prisma = new PrismaClient();
 export default async function me(req: Request, res: Response) {
   try {
     const token = req.headers.authorization;
-    if (!token)
-      return res.status(401).send({ message: "Not logged in", path: "login" });
+    if (!token) return res.status(401).send({ message: "Not logged in" });
 
     // Verify the token
     let decoded: any;
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET as string);
     } catch (e) {
-      return res.status(401).send({ message: "Invalid token", path: "login" });
+      return res.status(401).send({ message: "Not logged in" });
     }
     if (!decoded || !decoded.userId)
-      return res.status(401).send({ message: "Invalid token", path: "login" });
+      return res.status(401).send({ message: "Not logged in" });
 
     // Send the user data
     const user = await prisma.user.findUnique({
@@ -32,8 +31,7 @@ export default async function me(req: Request, res: Response) {
         role: true,
       },
     });
-    if (!user)
-      return res.status(401).send({ message: "User not found", path: "login" });
+    if (!user) return res.status(401).send({ message: "User not found" });
     return res.status(200).send({
       data: user,
     });

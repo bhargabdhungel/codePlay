@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import fetchData, { Method } from "../helpers/fetchData";
 import { useNavigate } from "react-router-dom";
 import { fetchResponse } from "../pages/auth/Login";
+import { useRecoilState } from "recoil";
+import { loggedInAtom } from "../store/search";
 
-export default function useAuth() {
+export default function useAuth(inAuth: boolean = false) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [loggedIn, setLoggedIn] = useRecoilState(loggedInAtom);
   useEffect(() => {
     const getInfo = async () => {
       setLoading(true);
@@ -15,7 +18,14 @@ export default function useAuth() {
           url: import.meta.env.VITE_API + "/auth/me",
           token: localStorage.getItem("token") || "",
         });
-        if (response.path) navigate("/" + response.path);
+        console.log(response);
+        if (response.status < 300) {
+          setLoggedIn(true);
+          if (inAuth) navigate("/home");
+        } else {
+          setLoggedIn(false);
+          if (!inAuth) navigate("/");
+        }
         setLoading(false);
       } catch (err) {
         if (err instanceof Error) {
@@ -24,7 +34,7 @@ export default function useAuth() {
         setLoading(false);
       }
     };
-    getInfo();
-  }, [navigate]);
+    if (!loggedIn) getInfo();
+  }, [inAuth, loggedIn, navigate, setLoggedIn]);
   return loading;
 }

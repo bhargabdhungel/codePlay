@@ -36,21 +36,21 @@ export default async function fetchData(data: FetchDataProps) {
       data: data.body,
       params: data.params,
     });
-    if (response.data.message) alert(response.data.message);
     if (response.data.save) {
       for (const key in response.data.save) {
         localStorage.setItem(key, response.data.save[key]);
       }
     }
-    return response.data;
+    response.data.status = response.status;
+    return response.data || "Something went wrong";
   } catch (err) {
     const error = err as AxiosErrorType;
-    if (error.response.data.message) alert(error.response.data.message);
     if (error.response.data.save) {
       for (const key in error.response.data.save) {
         localStorage.setItem(key, error.response.data.save[key]);
       }
     }
+    error.response.data.status = error.response.status;
     return error.response.data || "Something went wrong";
   }
 }

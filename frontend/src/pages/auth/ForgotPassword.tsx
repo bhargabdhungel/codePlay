@@ -34,6 +34,7 @@ export default function ForgotPassword() {
         },
       });
       if (resp.path) navigate("/" + resp.path);
+      if (resp.message) alert(resp.message);
     } catch (err: unknown) {
       if (err instanceof Error) {
         alert("Check your internet connection");
