@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { ThemeProvider } from "@mui/material/styles";
-import { defaultTheme } from "../../assets/theme";
+import { darkTheme } from "../../assets/theme";
 import Copyright from "../../components/Copyright";
 import fetchData, { Method } from "../../helpers/fetchData";
 import { useState } from "react";
@@ -57,7 +57,7 @@ export default function SignInSide() {
 
   return (
     <>
-      <ThemeProvider theme={defaultTheme}>
+      <ThemeProvider theme={darkTheme}>
         <Grid container component="main" sx={{ height: "100vh" }}>
           <CssBaseline />
           <Grid

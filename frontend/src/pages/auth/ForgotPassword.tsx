@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { ThemeProvider } from "@mui/material/styles";
 import Copyright from "../../components/Copyright";
-import { defaultTheme } from "../../assets/theme";
+import { darkTheme } from "../../assets/theme";
 import { useState } from "react";
 import fetchData, { Method } from "../../helpers/fetchData";
 import { fetchResponse } from "./Login";
@@ -47,7 +47,7 @@ export default function ForgotPassword() {
 
   return (
     <>
-      <ThemeProvider theme={defaultTheme}>
+      <ThemeProvider theme={darkTheme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box

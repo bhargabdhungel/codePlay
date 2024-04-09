@@ -1,6 +1,6 @@
 import { ThemeProvider } from "@mui/material/styles";
 import SimpleBackdrop from "../../components/BackDrop";
-import { defaultTheme } from "../../assets/theme";
+import { darkTheme } from "../../assets/theme";
 import { createRef, useEffect, useRef, useState } from "react";
 import { Avatar, Container, CssBaseline, Typography } from "@mui/material";
 import Copyright from "../../components/Copyright";
@@ -59,7 +59,7 @@ export default function Verify({ path }: { path: string }) {
 
   return (
     <>
-      <ThemeProvider theme={defaultTheme}>
+      <ThemeProvider theme={darkTheme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <div className="flex justify-center items-center pt-24 flex-col">
