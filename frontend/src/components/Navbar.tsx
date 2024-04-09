@@ -9,29 +9,33 @@ import { darkTheme } from "../assets/theme";
 import { GitHub } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
 import Button from "@mui/material/Button";
-import { useRecoilState } from "recoil";
-import { showSearchBarAtom } from "../store/search";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { Tooltip } from "@mui/material";
+import { showSearchBarAtom, showUserAtom } from "../store/search";
 
 export default function PrimarySearchAppBar() {
   const [showSearchBar, setShowSearchBar] = useRecoilState(showSearchBarAtom);
+  const setShowProfile = useSetRecoilState(showUserAtom);
   return (
     <ThemeProvider theme={darkTheme}>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              sx={{
-                mr: 1,
-              }}
-              href="https://github.com/bhargabdhungel/codePlay"
-              target="_blank"
-            >
-              <GitHub />
-            </IconButton>
+            <Tooltip title="Github" placement="left">
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="open drawer"
+                sx={{
+                  mr: 1,
+                }}
+                href="https://github.com/bhargabdhungel/codePlay"
+                target="_blank"
+              >
+                <GitHub />
+              </IconButton>
+            </Tooltip>
             <Typography
               variant="h6"
               noWrap
@@ -57,9 +61,14 @@ export default function PrimarySearchAppBar() {
             </Button>
             <Box sx={{ flexGrow: 1 }} />
             <Box>
-              <IconButton color="inherit">
-                <Avatar sx={{ bgcolor: "white", width: 32, height: 32 }} />
-              </IconButton>
+              <Tooltip title="Profile" placement="bottom">
+                <IconButton
+                  color="inherit"
+                  onClick={() => setShowProfile(true)}
+                >
+                  <Avatar sx={{ bgcolor: "white", width: 32, height: 32 }} />
+                </IconButton>
+              </Tooltip>
             </Box>
           </Toolbar>
         </AppBar>

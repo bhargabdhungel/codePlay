@@ -13,7 +13,7 @@ export default function ComboBox() {
   useOutsideClick(ref, () => setShowSearchBar(false));
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className="w-full">
       <Autocomplete
         disablePortal
         options={searchData}
@@ -25,7 +25,7 @@ export default function ComboBox() {
           setShowSearchBar(false);
         }}
         renderInput={(params) => (
-          <TextField autoFocus={true} {...params} label="Movie" />
+          <TextField autoFocus={true} {...params} label="Search" />
         )}
       />
     </div>

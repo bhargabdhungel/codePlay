@@ -16,3 +16,8 @@ export const searchRefAtom = atom({
   key: "searchRefAtom",
   default: null as RefObject<HTMLDivElement> | null,
 });
+
+export const showUserAtom = atom({
+  key: "showProfileAtom",
+  default: false as boolean,
+});

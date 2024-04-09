@@ -36,7 +36,6 @@ export default async function fetchData(data: FetchDataProps) {
       data: data.body,
       params: data.params,
     });
-    console.log(response.data);
     if (response.data.message) alert(response.data.message);
     if (response.data.save) {
       for (const key in response.data.save) {
