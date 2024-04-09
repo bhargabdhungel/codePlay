@@ -39,7 +39,6 @@ function me(req, res) {
                 select: {
                     email: true,
                     name: true,
-                    verified: true,
                     role: true,
                 },
             });

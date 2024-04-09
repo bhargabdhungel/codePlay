@@ -78,5 +78,5 @@ export default async function resetPassword(req: Request, res: Response) {
 
   return res
     .status(200)
-    .send({ message: "Password reset successfully", path: "home" });
+    .send({ message: "Password reset successfully", path: "login" });
 }

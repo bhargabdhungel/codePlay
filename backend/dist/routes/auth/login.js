@@ -59,7 +59,7 @@ function login(req, res) {
             return res.status(401).send({
                 message: "OTP sent for verification",
                 path: "verifyEmail",
-                data: {
+                save: {
                     email: user.email,
                 },
             });

@@ -42,7 +42,9 @@ function verifyEmail(req, res) {
         if (!user)
             return res.status(404).send({ message: "User not found", path: "signup" });
         if (user.otpAttempt >= 10)
-            return res.status(401).send({ message: "Too many attempts" });
+            return res
+                .status(401)
+                .send({ message: "Too many attempts", path: "login" });
         // Check if the OTP is correct and has not expired
         const userWithOtp = yield prisma.user.findFirst({
             where: {
@@ -84,7 +86,9 @@ function verifyEmail(req, res) {
         const token = jsonwebtoken_1.default.sign({ userId: user.id }, process.env.JWT_SECRET, {
             expiresIn: "15d",
         });
-        return res.status(200).send({ message: "User verified", save: { token } });
+        return res
+            .status(200)
+            .send({ message: "User verified", save: { token }, path: "home" });
     });
 }
 exports.default = verifyEmail;

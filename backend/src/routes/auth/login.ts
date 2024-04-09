@@ -48,7 +48,7 @@ export default async function login(req: Request, res: Response) {
     return res.status(401).send({
       message: "OTP sent for verification",
       path: "verifyEmail",
-      data: {
+      save: {
         email: user.email,
       },
     });

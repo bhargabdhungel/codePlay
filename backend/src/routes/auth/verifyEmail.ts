@@ -31,7 +31,9 @@ export default async function verifyEmail(req: Request, res: Response) {
   if (!user)
     return res.status(404).send({ message: "User not found", path: "signup" });
   if (user.otpAttempt >= 10)
-    return res.status(401).send({ message: "Too many attempts" });
+    return res
+      .status(401)
+      .send({ message: "Too many attempts", path: "login" });
 
   // Check if the OTP is correct and has not expired
   const userWithOtp = await prisma.user.findFirst({
@@ -80,5 +82,7 @@ export default async function verifyEmail(req: Request, res: Response) {
       expiresIn: "15d",
     }
   );
-  return res.status(200).send({ message: "User verified", save: { token } });
+  return res
+    .status(200)
+    .send({ message: "User verified", save: { token }, path: "home" });
 }

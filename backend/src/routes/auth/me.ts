@@ -27,7 +27,6 @@ export default async function me(req: Request, res: Response) {
       select: {
         email: true,
         name: true,
-        verified: true,
         role: true,
       },
     });
