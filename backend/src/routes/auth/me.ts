@@ -7,7 +7,8 @@ const prisma = new PrismaClient();
 export default async function me(req: Request, res: Response) {
   try {
     const token = req.headers.authorization;
-    if (!token) return res.status(401).send({ message: "Not logged in" });
+    if (!token)
+      return res.status(401).send({ message: "Not logged in", path: "login" });
 
     // Verify the token
     let decoded: any;

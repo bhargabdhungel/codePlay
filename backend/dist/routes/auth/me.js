@@ -20,7 +20,7 @@ function me(req, res) {
         try {
             const token = req.headers.authorization;
             if (!token)
-                return res.status(401).send({ message: "Not logged in" });
+                return res.status(401).send({ message: "Not logged in", path: "login" });
             // Verify the token
             let decoded;
             try {
