@@ -21,7 +21,7 @@ enum Role {
 model User {
   id                String    @id @default(cuid())
   email             String    @unique
-  name              String?   @unique
+  name              String    @unique
   password          String
   newPassword       String?
   resetToken        String?
@@ -34,4 +34,29 @@ model User {
   role              Role      @default(USER)
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
+  profile           Profile?
+}
+
+model Profile {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  user      User       @relation(fields: [userId], references: [id])
+  streak    Int        @default(0)
+  level     Int        @default(0)
+  points    Int        @default(0)
+  bio       String?
+  avatar    String?
+  cover     String?
+  gender    String?
+  github    String?
+  twitter   String?
+  facebook  String?
+  linkedin  String?
+  instagram String?
+  birthday  DateTime?
+  location  String?
+  website   String?
+  heatMap   DateTime[] @default([])
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
